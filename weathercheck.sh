@@ -13,7 +13,7 @@ key="$(cat key)"
 key_url="http://dataservice.accuweather.com/locations/v1/cities/search?apikey=$key&q=$location"
 
 #Query the url
-#fetcher="$(curl -X GET $key_url)"
+fetcher="$(curl -sX GET $key_url)"
 
 #Get the location number
 lkey="$(echo $fetcher | sed -rne 's/[^K]*?Key\":\"(\w*).*/\1/p' )"
@@ -22,7 +22,7 @@ lkey="$(echo $fetcher | sed -rne 's/[^K]*?Key\":\"(\w*).*/\1/p' )"
 info_url="http://dataservice.accuweather.com/currentconditions/v1/$lkey?apikey=$key&details=true"
 
 #Query the url
-json="$(curl -X get $info_url)"
+json="$(curl -sX GET $info_url)"
 #json="$(cat jsontest)" #jsontest is a statif file with the infomation from curling info_url, used to save api calls
 
 #Parse the url with python/json
