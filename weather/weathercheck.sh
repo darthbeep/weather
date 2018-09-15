@@ -22,8 +22,8 @@ lkey="$(echo $fetcher | sed -rne 's/[^K]*?Key\":\"(\w*).*/\1/p' )"
 info_url="http://dataservice.accuweather.com/currentconditions/v1/$lkey?apikey=$key&details=true"
 
 #Query the url
-#json="$(curl -X get $info_url)"
-json="$(cat jsontest)"
+json="$(curl -X get $info_url)"
+#json="$(cat jsontest)" #jsontest is a statif file with the infomation from curling info_url, used to save api calls
 
 #Parse the url with python/json
 temp="$(echo $json | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['Temperature']['Imperial']['Value'])")"
