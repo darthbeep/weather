@@ -6,10 +6,24 @@ location="$(echo $space_location | sed -e 's/_/%20/g')"
 key="$(cat key)"
 
 #Get location key from accuweather
-url="http://dataservice.accuweather.com/locations/v1/cities/search?apikey=$key&q=$location"
+key_url="http://dataservice.accuweather.com/locations/v1/cities/search?apikey=$key&q=$location"
 
 #Query the url
-JSON="$(curl -X GET $url)"
+#fetcher="$(curl -X GET $key_url)"
 
 #Get the location number
-lkey="$(echo $JSON | sed -rne 's/[^K]*?Key\":\"(\w*).*/\1/p' )"
+lkey="$(echo $fetcher | sed -rne 's/[^K]*?Key\":\"(\w*).*/\1/p' )"
+
+#Get all the data from accuweather
+info_url="http://dataservice.accuweather.com/currentconditions/v1/$lkey?apikey=$key&details=true"
+
+#Query the url
+#json="$(curl -X get $info_url)"
+json="$(cat jsontest)"
+#echo $json
+
+#Parse the url with python/json
+temp="$(echo $json | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['Temperature']['Imperial']['Value'])")"
+precip="$(echo $json | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['Precip1hr']['Imperial']['Value'])")"
+echo $temp
+echo $precip
